@@ -45,8 +45,8 @@
 		</button>
 	</transition>
 	-->
-	<input type="radio" name="view-type">A
-	<input type="radio" n ame="view-type">B
+	<input type="radio" name="view-type" v-on:click="view = 'v-a'">A
+	<input type="radio" name="view-type" v-on:click="view = 'v-b'">B
 	<transition name="component-fade" mode="out-in">
 		<component v-bind:is="view"></component>
 	</transition>
