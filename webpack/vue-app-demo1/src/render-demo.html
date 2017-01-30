@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Render Demo</title>
+</head>
+<body>
+<div id="demo1">
+	<parent-component></parent-component>
+</div>
+<div id="demo2">
+	<app></app>
+</div>
+<div id="demo3">
+	<slot-scope-parent></slot-scope-parent>
+</div>
+<div id="demo4">
+	<my-awesome-list-parent></my-awesome-list-parent>
+</div>
+<div id="demo5">
+	<component v-bind:is="currentView"></component>
+</div>
+<div id="demo6">
+	<anchored-heading-parent :text="'sometext'"></anchored-heading-parent>
+</div>
+
+</body>
+</html>

@@ -1,89 +1,202 @@
 var Vue = require("vue");
-require("./mixin.js");
-require("./style.css");
-if (process.env.NODE_ENV !== 'production') {
-  require('./demo1.html')
-}
+
+Vue.component("my-component", {
+	template:"\
+	<div>\
+		<h2>我是子组件的标题</h2>\
+		<slot>\
+			只有在没有要分发的内容时才会显示。\
+		</slot>\
+	</div>\
+	"
+});
+
+Vue.component("parent-component", {
+	template: "\
+	<div>\
+		<h1>我是父组件的标题</h1>\
+		<my-component>\
+			<p>这是一些初始内容</p>\
+			<p>这是更多的初始内容</p>\
+		</my-component>\
+	</div>\
+	"
+});
+
+Vue.component("app-layout", {
+	template: "\
+	<div>\
+		<header>\
+			<slot name='header1'></slot>\
+		</header>\
+		<main>\
+			<slot></slot>\
+		</main>\
+		<footer>\
+			<slot name='footer1'></slot>\
+		</footer>\
+	</div>\
+	"
+});
+
+Vue.component("app", {
+	template: "\
+	<app-layout>\
+		<h1 slot='header1'>这里可能是一个页面的标题</h1>\
+		<p>主要内容的一个段落。</p>\
+		<p>另一个主要内容的段落</p>\
+		<p slot='footer1'>这里有一些联系信息</p>\
+	</app-layout>\
+	"
+})
+
+Vue.component("slot-scope-child", {
+	template: "\
+	<div>\
+		<slot text='hello from child'></slot>\
+	</div>\
+	"
+});
+
+Vue.component("slot-scope-parent", {
+	template: "\
+	<div>\
+		<slot-scope-child>\
+			<template scope='props'>\
+				<span>Hello from parent</span>\
+				<span>{{ props.text }}</span>\
+			</template>\
+		</slot-scope-child>\
+	</div>\
+	"
+});
 
 
-Vue.directive("color-swatch", {
-	bind: function(el, binding) {
-		console.log(binding.value);
-		el.style.backgroundColor = binding.value;
+Vue.component("my-awesome-list-parent", {
+	template: "\
+	<my-awesome-list>\
+		<template slot='item' scope='props'>\
+			<li> {{ props.text }}</li>\
+		</template>\
+	</my-awesome-list>\
+	"
+});
+
+Vue.component("anchored-heading", {
+			template: "\
+			<div>\
+				<h1 v-if='level === 1'>\
+					<slot></slot>\
+				</h1>\
+				<h2 v-if='level === 2'>\
+					<slot></slot>\
+				</h2>\
+				<h3 v-if='level === 3'>\
+					<slot></slot>\
+				</h3>\
+				<h4 v-if='level === 4'>\
+					<slot></slot>\
+				</h4>\
+				<h5 v-if='level === 5'>\
+					<slot></slot>\
+				</h5>\
+				<h6 v-if='level === 6'>\
+					<slot></slot>\
+				</h6>\
+			",
+			props: {
+				"level": {
+					type: Number,
+					require: true
+				}
+			}
+		})
+
+Vue.component("my-awesome-list", {
+	template: "\
+	<ul>\
+		<slot name='item'\
+			v-for='item in items'\
+			:text='item.text'>\
+		</slot>\
+	</ul>\
+	",
+	data: function(){
+			return {
+				items: [
+				{
+					text: "what"
+				},
+				{
+					text: "are"
+				},
+				{
+					text:"you"
+				},
+				{
+					text: "talking"
+				},
+				{
+					text: "ab"
+				}
+			]
+		};
 	}
+
 });
 
-Vue.directive("demo1", function(el, binding) {
-	console.log(binding.value.color);
-	console.log(binding.value.text);
-});
-
-var test1 = new Vue({
-	el: "#test1"
-})
-
-var test2 = new Vue({
-	el: "#test2"
-})
-
-var vm = new Vue({
-	el: "#test",
+var demo5 = new Vue({
+	el: "#demo5",
 	data: {
-		isEditing: false,
-		docState: "saved",
-		view: "v-a",
-		items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-		nextNum: 10,
-		message: "hello!"
+		currentView: 'posts'
 	},
 	components: {
-		"v-a": {
-			template: "<div>Component A</div>"
+		home: {
+			template: "<div>Home Page</div>"
 		},
-		"v-b": {
-			template: "<div>Component B</div>"
-		}
-	},
-	methods: {
-		randomIndex: function() {
-			return Math.floor(Math.random() * this.items.length);
+		posts: {
+			template: "<div>Posts Page</div>"
 		},
-		add: function() {
-			this.items.splice(this.randomIndex(), 0, this.nextNum++)
-		},
-		remove: function() {
-			this.items.splice(this.randomIndex(), 1);
-		}
-	},
-	computed: {
-		buttonMessage: function() {
-			switch(this.docState) {
-				case "saved": return "Edit"
-				case "edited": return "Save"
-				case "editing": return "Cancel"
-			}
-		}
-	},
-	directives: {
-		focus: {
-			inserted: function(el) {
-				el.focus();
-			}
-		},
-		demo: {
-			bind: function(el, binding, vnode) {
-				var s = JSON.stringify
-				el.innerHTML = 
-				'name: ' + s(binding.name) + '<br>' +
-				'value:' + s(binding.value) + '<br>' +
-				"expression: "+ s(binding.expression) + "<br>" +
-				"argument:" + s(binding.arg) + "<br>" +
-				"modifiers:" + s(binding.modifiers) +"<br>" +
-				"vnode keys:" + Object.keys(vnode).join(", ")
-			}
+		archive: {
+			template: "<div>Archive Page</div>"
 		}
 	}
 });
 
+var demo1 = new Vue({
+	el: "#demo1"
+});
 
+var demo2 = new Vue({
+	el: "#demo2"
+});
 
+var demo3 = new Vue({
+	el: "#demo3"
+})
+
+var demo4 = new Vue({
+	el: "#demo4"
+})
+
+var demo6 = new Vue({
+	el: "#demo6",
+	data: {
+		sometext: "Hello123"
+	},
+	components: {
+		"anchored-heading-parent": {
+			template:"\
+			<anchored-heading :level='1'>\
+				<a> {{ text }} </a>\
+			</anchored-heading>\
+			",
+			props: {
+				"text": {
+					type: String,
+					default: "Hello world!"
+				}
+			}
+		}
+	}
+})

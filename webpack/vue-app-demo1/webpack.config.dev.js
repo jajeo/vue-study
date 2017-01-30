@@ -37,7 +37,8 @@ module.exports = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new HtmlWebpackPlugin({
-			template:"./src/demo1.html"
+			template:"./src/render-demo.html",
+			filename: "index.html"
 		})
 	],
 	devServer: {
