@@ -10,7 +10,7 @@ var vm = new Vue({
 	},
 	components: {
 		"v-a": {
-			template: "<div>Component A</div>"
+			template: "<div>Component AA</div>"
 		},
 		"v-b": {
 			template: "<div>Component B</div>"
