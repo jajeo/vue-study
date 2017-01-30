@@ -1,5 +1,8 @@
 var Vue = require("vue");
-require("./style.css")
+require("./style.css");
+if (process.env.NODE_ENV !== 'production') {
+  require('./demo1.html')
+}
 
 var vm = new Vue({
 	el: "#test",

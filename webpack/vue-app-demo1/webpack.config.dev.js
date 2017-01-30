@@ -3,6 +3,7 @@ var path = require('path')
 var webpack = require('webpack');
 
 module.exports = {
+	devtool: 'cheap-eval-source-map',
 	entry: [
 		"webpack-dev-server/client?http://localhost:8080",
 		"webpack/hot/dev-server",
@@ -25,14 +26,18 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				loader: "style!css"
+				loaders: ["style","css"]
+			},
+			{
+				test:/\.html$/,
+				loader: "raw-loader"
 			}
 		]
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new HtmlWebpackPlugin({
-			template:"./demo1.html"
+			template:"./src/demo1.html"
 		})
 	],
 	devServer: {
