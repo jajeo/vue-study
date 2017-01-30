@@ -1,4 +1,5 @@
 var Vue = require("vue");
+require("./mixin.js");
 require("./style.css");
 if (process.env.NODE_ENV !== 'production') {
   require('./demo1.html')
@@ -83,4 +84,6 @@ var vm = new Vue({
 		}
 	}
 });
+
+
 
