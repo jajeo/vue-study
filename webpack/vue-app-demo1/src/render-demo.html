@@ -22,6 +22,28 @@
 <div id="demo6">
 	<anchored-heading-parent :text="'sometext'"></anchored-heading-parent>
 </div>
+<div id="demo7">
+	<anchored-heading2 :level="1">
+		<a href="#">hello</a>
+	</anchored-heading2>
+</div>
+<div id="demo8">
+	<anchored-heading1 :level="1">
+		<a href="#">aa</a>
+	</anchored-heading1>
+</div>
+<div id="demo9">
+	<ul v-if="items.length">
+		<li v-for="item in items"> {{ item.name }} </li>
+	</ul>
+	<p v-else>No items found.</p>
+</div>
+<div id="demo10">
+	<my-list :items="items"></my-list>
+</div>
+<div id="demo11">
+	<my-input></my-input>
+</div>
 
 </body>
 </html>

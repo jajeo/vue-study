@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vue-router</title>
+</head>
+<body>
+<div id="app">
+	<router-link to="/user/foo">/user/foo</router-link>
+	<router-link to="/user/foo/profile">/user/foo/profile</router-link>
+	<router-link to="/user/foo/posts">/user/foo/posts</router-link><br/>
+	<button @click="$router.go(-1)">back</button>
+	<button @click="$router.push('/user/foo')">/user/foo</button>
+	<button @click="$router.replace('/user/foo')">/user/foo</button>
+	<router-view></router-view>
+</div>
+</body>
+</html>

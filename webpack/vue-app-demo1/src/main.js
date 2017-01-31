@@ -1,202 +1,101 @@
 var Vue = require("vue");
+var VueRouter = require("vue-router");
 
-Vue.component("my-component", {
-	template:"\
-	<div>\
-		<h2>我是子组件的标题</h2>\
-		<slot>\
-			只有在没有要分发的内容时才会显示。\
-		</slot>\
-	</div>\
-	"
-});
+Vue.use(VueRouter);
 
-Vue.component("parent-component", {
+var Home = {
+	template: "<div><h2>Home</h2><p>hello</p></div>"
+}
+
+var Parent = {
+	data: function() {
+		return {
+			transitionName: "slide-left"
+		}
+	},
+	watch: {
+		"$route": function(to, from) {
+			var toDepth = to.path.split("/").length
+			var fromDepth = from.path.split("/").length
+			this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
+		}
+	},
 	template: "\
 	<div>\
-		<h1>我是父组件的标题</h1>\
-		<my-component>\
-			<p>这是一些初始内容</p>\
-			<p>这是更多的初始内容</p>\
-		</my-component>\
+		<h2>Parent</h2>\
+		<transition :name='transitionName'>\
+			<router-view></router-view>\
+		</transition>\
 	</div>\
 	"
-});
+}
 
-Vue.component("app-layout", {
-	template: "\
-	<div>\
-		<header>\
-			<slot name='header1'></slot>\
-		</header>\
-		<main>\
-			<slot></slot>\
-		</main>\
-		<footer>\
-			<slot name='footer1'></slot>\
-		</footer>\
-	</div>\
-	"
-});
+var Default = {
+	template: "<div>default</div>"
+}
 
-Vue.component("app", {
-	template: "\
-	<app-layout>\
-		<h1 slot='header1'>这里可能是一个页面的标题</h1>\
-		<p>主要内容的一个段落。</p>\
-		<p>另一个主要内容的段落</p>\
-		<p slot='footer1'>这里有一些联系信息</p>\
-	</app-layout>\
-	"
-})
+var Foo = {
+	template: "<div>foo</div>"
+}
 
-Vue.component("slot-scope-child", {
-	template: "\
-	<div>\
-		<slot text='hello from child'></slot>\
-	</div>\
-	"
-});
+var Bar = {
+	template: "<div>bar</div>"
+}
 
-Vue.component("slot-scope-parent", {
-	template: "\
-	<div>\
-		<slot-scope-child>\
-			<template scope='props'>\
-				<span>Hello from parent</span>\
-				<span>{{ props.text }}</span>\
-			</template>\
-		</slot-scope-child>\
-	</div>\
-	"
-});
-
-
-Vue.component("my-awesome-list-parent", {
-	template: "\
-	<my-awesome-list>\
-		<template slot='item' scope='props'>\
-			<li> {{ props.text }}</li>\
-		</template>\
-	</my-awesome-list>\
-	"
-});
-
-Vue.component("anchored-heading", {
-			template: "\
-			<div>\
-				<h1 v-if='level === 1'>\
-					<slot></slot>\
-				</h1>\
-				<h2 v-if='level === 2'>\
-					<slot></slot>\
-				</h2>\
-				<h3 v-if='level === 3'>\
-					<slot></slot>\
-				</h3>\
-				<h4 v-if='level === 4'>\
-					<slot></slot>\
-				</h4>\
-				<h5 v-if='level === 5'>\
-					<slot></slot>\
-				</h5>\
-				<h6 v-if='level === 6'>\
-					<slot></slot>\
-				</h6>\
-			",
-			props: {
-				"level": {
-					type: Number,
-					require: true
-				}
-			}
-		})
-
-Vue.component("my-awesome-list", {
-	template: "\
-	<ul>\
-		<slot name='item'\
-			v-for='item in items'\
-			:text='item.text'>\
-		</slot>\
-	</ul>\
-	",
-	data: function(){
-			return {
-				items: [
+var router = new VueRouter({
+	mode: "history",
+	base: __dirname,
+	routes: [
+		{
+			path: "/",
+			component: Home	
+		},
+		{
+			path: "/parent",
+			component: Parent,
+			children: [
 				{
-					text: "what"
+					path: "",
+					component:Default
 				},
 				{
-					text: "are"
+					path:"foo",
+					component: Foo
 				},
 				{
-					text:"you"
-				},
-				{
-					text: "talking"
-				},
-				{
-					text: "ab"
+					path: "bar",
+					component: Bar
 				}
 			]
-		};
-	}
-
-});
-
-var demo5 = new Vue({
-	el: "#demo5",
-	data: {
-		currentView: 'posts'
-	},
-	components: {
-		home: {
-			template: "<div>Home Page</div>"
-		},
-		posts: {
-			template: "<div>Posts Page</div>"
-		},
-		archive: {
-			template: "<div>Archive Page</div>"
 		}
-	}
+	]
 });
 
-var demo1 = new Vue({
-	el: "#demo1"
-});
-
-var demo2 = new Vue({
-	el: "#demo2"
-});
-
-var demo3 = new Vue({
-	el: "#demo3"
-})
-
-var demo4 = new Vue({
-	el: "#demo4"
-})
-
-var demo6 = new Vue({
-	el: "#demo6",
-	data: {
-		sometext: "Hello123"
-	},
-	components: {
-		"anchored-heading-parent": {
-			template:"\
-			<anchored-heading :level='1'>\
-				<a> {{ text }} </a>\
-			</anchored-heading>\
-			",
-			props: {
-				"text": {
-					type: String,
-					default: "Hello world!"
-				}
-			}
-		}
-	}
-})
+var app = new Vue({
+	router,
+	template: "\
+	<div id='app'>\
+		<h1>Transition</h1>\
+		<ul>\
+			<li><router-link to='/'>\
+				/\
+			</router-link></li>\
+			\
+			<li><router-link to='/parent'>\
+				/parent\
+			</router-link></li>\
+			\
+			<li><router-link to='/parent/foo'>\
+				/parent/foo\
+			</router-link></li>\
+			\
+			<li><router-link to='/parent/bar'>\
+				/parent/bar\
+			</router-link></li>\
+		</ul>\
+		<transition name='fade' mode='out-in'>\
+			<router-view></router-view>\
+		</transition>\
+	</div>\
+	"
+}).$mount("#app");

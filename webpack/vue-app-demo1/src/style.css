@@ -19,3 +19,7 @@
 	opacity: 0;
 	transform: translateY(30px);
 }
+
+.router-link-active {
+	color:red;
+}

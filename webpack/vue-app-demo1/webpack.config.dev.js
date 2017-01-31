@@ -37,8 +37,7 @@ module.exports = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new HtmlWebpackPlugin({
-			template:"./src/render-demo.html",
-			filename: "index.html"
+			template:"./src/vuerouter-demo.html",
 		})
 	],
 	devServer: {

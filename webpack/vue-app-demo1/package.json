@@ -10,7 +10,8 @@
   "author": "jajeome@163.com",
   "license": "MIT",
   "dependencies": {
-    "vue": "^2.1.10"
+    "vue": "^2.1.10",
+    "vue-router": "^2.2.0"
   },
   "devDependencies": {
     "css-loader": "^0.26.1",
